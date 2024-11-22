@@ -101,40 +101,40 @@
       document.querySelector("#unity-loading-bar").style.display = "block";
 
       var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                document.querySelector("#unity-loading-bar").style.display = "none";
+  script.src = loaderUrl;
+  script.onload = () => {
+    createUnityInstance(canvas, config, (progress) => {
+      document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+    }).then((unityInstance) => {
+      document.querySelector("#unity-loading-bar").style.display = "none";
 
-                window.sendDataToWebGL = function (jsonData) {
+      // WebView → WebGL: WebView에서 Unity WebGL로 데이터를 보냄
+      window.sendDataToWebGL = function (jsonData) {
+        if (unityInstance && unityInstance.SendMessage) {
+          console.log("Sending data from WebView to WebGL...");
+          unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
+        } else {
+          console.error("Unity WebGL instance is not ready.");
+        }
+      };
+
+      // WebGL → WebView: Unity WebGL에서 WebView로 데이터를 보냄
+      window.sendDataToWebView = function (jsonData) {
             if (unityInstance && unityInstance.SendMessage) 
             {
               console.log("send!");
-              unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
+              unityInstance.SendMessage("ReceiverWebview", "ReceiveJsonData", jsonData);
             } 
             else {
               console.error("Unity instance is not ready.");
             }
-          }
-                window.sendDataToWebView = function (jsonData) {
-            if (unityInstance && unityInstance.SendMessage) 
-            {
-              console.log("send!");
-              unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
-            } 
-            else {
-              console.error("Unity instance is not ready.");
-            }
+      };
 
-          }
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
+    }).catch((message) => {
+      alert(message);
+    });
+  };
+  document.body.appendChild(script);
 
     </script>
   </body>
