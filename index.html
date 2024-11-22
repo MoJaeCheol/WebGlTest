@@ -111,7 +111,7 @@
                 window.sendDataToUnity = function (jsonData) {
             if (unityInstance && unityInstance.SendMessage) 
             {
-              unityInstance.SendMessage("GameObjectName", "ReceiveJsonData", jsonData);
+              unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
             } 
             else {
               console.error("Unity instance is not ready.");
