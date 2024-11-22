@@ -108,7 +108,7 @@
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
 
-                window.sendDataToUnity = function (jsonData) {
+                window.sendDataToWebGL = function (jsonData) {
             if (unityInstance && unityInstance.SendMessage) 
             {
               console.log("send!");
@@ -117,9 +117,18 @@
             else {
               console.error("Unity instance is not ready.");
             }
-          }; 
+          }
+                window.sendDataToWebView = function (jsonData) {
+            if (unityInstance && unityInstance.SendMessage) 
+            {
+              console.log("send!");
+              unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
+            } 
+            else {
+              console.error("Unity instance is not ready.");
+            }
 
-
+          }
               }).catch((message) => {
                 alert(message);
               });
