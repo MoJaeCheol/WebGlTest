@@ -9,16 +9,21 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1920 height=1200 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">WebGLTest</div>
       </div>
     </div>
+    <p><a href="javascript:void(0)" onclick="Unity.call('anchor');">[Send Message!]</a></p>
     <script>
       var canvas = document.querySelector("#unity-canvas");
 
@@ -28,6 +33,11 @@
       // Modify or remove this function to customize the visually presented
       // way that non-critical warnings and error messages are presented to the
       // user.
+
+      window.CallBrowser = function(str)
+      {
+        console.log(str);
+      }
       function unityShowBanner(msg, type) {
         var warningBanner = document.querySelector("#unity-warning");
         function updateBannerVisibility() {
@@ -94,47 +104,29 @@
 
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "1920px";
-        canvas.style.height = "1200px";
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
       }
 
       document.querySelector("#unity-loading-bar").style.display = "block";
 
       var script = document.createElement("script");
-  script.src = loaderUrl;
-  script.onload = () => {
-    createUnityInstance(canvas, config, (progress) => {
-      document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-    }).then((unityInstance) => {
-      document.querySelector("#unity-loading-bar").style.display = "none";
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                document.querySelector("#unity-loading-bar").style.display = "none";
+                document.querySelector("#unity-fullscreen-button").onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
 
-      // WebView → WebGL: WebView에서 Unity WebGL로 데이터를 보냄
-      window.sendDataToWebGL = function (jsonData) {
-        if (unityInstance && unityInstance.SendMessage) {
-          console.log("Sending data from WebView to WebGL...");
-          unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
-        } else {
-          console.error("Unity WebGL instance is not ready.");
-        }
-      };
+              }).catch((message) => {
+                alert(message);
+              });
+            };
 
-      // WebGL → WebView: Unity WebGL에서 WebView로 데이터를 보냄
-      window.sendDataToWebView = function (jsonData) {
-            if (unityInstance && unityInstance.SendMessage) 
-            {
-              console.log("send!");
-              unityInstance.SendMessage("ReceiverWebview", "ReceiveJsonData", jsonData);
-            } 
-            else {
-              console.error("Unity instance is not ready.");
-            }
-      };
-
-    }).catch((message) => {
-      alert(message);
-    });
-  };
-  document.body.appendChild(script);
+      document.body.appendChild(script);
 
     </script>
   </body>
