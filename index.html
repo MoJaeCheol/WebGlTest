@@ -94,7 +94,7 @@
       // expected to change.
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
+        // Mobile device style: fill the whole browser client area with the game canvas:     
 
         var meta = document.createElement('meta');
         meta.name = 'viewport';
@@ -125,7 +125,7 @@
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 window.sendDataToUnity = function (jsonData) {
             if (unityInstance && unityInstance.SendMessage) {
-              unityInstance.SendMessage("GameObjectName", "ReceiveJsonData", jsonData);
+              unityInstance.SendMessage("Receiver", "ReceiveJsonData", jsonData);
             } else {
               console.error("Unity instance is not ready.");
             }
