@@ -34,7 +34,7 @@
       // way that non-critical warnings and error messages are presented to the
       // user.
       function sendMessageToUnity(message) {
-        Console.log("msg : " + message);
+        Console.log("msg : " +message);
         if (window.Unity) {
             window.Unity.call(message);
         }
@@ -94,7 +94,7 @@
       // expected to change.
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:     
+        // Mobile device style: fill the whole browser client area with the game canvas:
 
         var meta = document.createElement('meta');
         meta.name = 'viewport';
@@ -123,8 +123,9 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-                
-                
+                document.querySelector("#unity-fullscreen-button").onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
 
               }).catch((message) => {
                 alert(message);
