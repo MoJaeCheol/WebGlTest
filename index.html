@@ -27,7 +27,6 @@
     <script>
       var canvas = document.querySelector("#unity-canvas");
 
-      var UnityPlayerInstance;
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
       // If type=='warning', a yellow highlight color is used.
@@ -124,11 +123,10 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-                UnityPlayerInstance=unityInstance;
                 function sendDataToUnity(jsonData)
                 {
-                  if(window.UnityPlayerInstance)
-                      UnityPlayerInstance.SendMessage('Receiver','ReceiveJsonData',jsonData);
+                  if(window.unityInstance)
+                      unityInstance.SendMessage('Receiver','ReceiveJsonData',jsonData);
                 }
                 
 
