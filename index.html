@@ -30,7 +30,6 @@
       // way that non-critical warnings and error messages are presented to the
       // user.
       function sendMessageToUnity(message) {
-        Console.log("msg : " + message);
         if (window.Unity) {
             window.Unity.call(message);
         }
@@ -38,7 +37,6 @@
       window.CallBrowser = function(str)
       {
         sendMessageToUnity(str);
-        console.log(str);
       }
       function unityShowBanner(msg, type) {
         var warningBanner = document.querySelector("#unity-warning");
