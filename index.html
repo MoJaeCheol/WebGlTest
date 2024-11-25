@@ -123,11 +123,13 @@
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-                function sendDataToUnity(jsonData)
-                {
-                  if(window.unityInstance)
-                      unityInstance.SendMessage('Receiver','ReceiveJsonData',jsonData);
-                }
+                window.sendDataToUnity = function (jsonData) {
+            if (unityInstance && unityInstance.SendMessage) {
+              unityInstance.SendMessage("GameObjectName", "ReceiveJsonData", jsonData);
+            } else {
+              console.error("Unity instance is not ready.");
+            }
+          };
                 
 
               }).catch((message) => {
