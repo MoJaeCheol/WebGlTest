@@ -33,9 +33,14 @@
       // Modify or remove this function to customize the visually presented
       // way that non-critical warnings and error messages are presented to the
       // user.
-
+      function sendMessageToUnity(message) {
+        if (window.Unity) {
+            window.Unity.call(message);
+        }
+    }
       window.CallBrowser = function(str)
       {
+        sendMessageToUnity(str);
         console.log(str);
       }
       function unityShowBanner(msg, type) {
